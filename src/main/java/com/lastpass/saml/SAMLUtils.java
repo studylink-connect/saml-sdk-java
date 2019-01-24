@@ -17,7 +17,16 @@
  */
 package com.lastpass.saml;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
 
 public class SAMLUtils
 {
@@ -45,5 +54,32 @@ public class SAMLUtils
         byte[] bytes = new byte[32];
         sr.nextBytes(bytes);
         return "_" + hexEncode(bytes);
+    }
+
+    public static byte[] readBytes(File file) throws IOException
+    {
+        // was implemented tediously prior to Java 7, now a simple wrapper
+        return Files.readAllBytes(file.toPath());
+    }
+
+    static RSAPrivateKey getRsaPrivateKey(String path) throws SAMLException
+    {
+      try
+      {
+        final KeySpec spec = new PKCS8EncodedKeySpec(readBytes(new File(path)));
+        return (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(spec);
+      }
+      catch (InvalidKeySpecException e)
+      {
+        throw new SAMLException(e);
+      }
+      catch (NoSuchAlgorithmException e)
+      {
+        throw new SAMLException(e);
+      }
+      catch (IOException e)
+      {
+        throw new SAMLException(e);
+      }
     }
 }

@@ -1,0 +1,7 @@
+<configuration>
+    <appender name="my_appender" class="ch.qos.logback.core.helpers.NOPAppender" />
+    <logger name="com.base22" level="TRACE"/>
+    <root level="debug">
+        <appender-ref ref="my_appender"/>
+    </root>
+</configuration>

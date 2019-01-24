@@ -27,14 +27,20 @@ import java.util.List;
  */
 public class AttributeSet
 {
-    private String nameId;
-    private Map<String, List<String>> attributes;
+    private final String nameId;
+    private final Map<String, List<String>> attributes;
+    private final List<String> errors;
+    private final List<String> warnings;
 
     public AttributeSet(String nameId,
-                        Map<String, List<String>> attributes)
+                        Map<String, List<String>> attributes,
+                        List<String> errors,
+                        List<String> warnings)
     {
         this.nameId = nameId;
         this.attributes = attributes;
+        this.errors = errors;
+        this.warnings = warnings;
     }
 
     public String getNameId()
@@ -45,5 +51,15 @@ public class AttributeSet
     public Map<String, List<String>> getAttributes()
     {
         return this.attributes;
+    }
+
+    public List<String> getErrors()
+    {
+        return this.errors;
+    }
+
+    public List<String> getWarnings()
+    {
+        return this.warnings;
     }
 }
